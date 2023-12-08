@@ -40,6 +40,7 @@
 #include "debug.h"
 
 #define DWC3_DEFAULT_AUTOSUSPEND_DELAY	500 /* ms */
+#define DWC3_GUCTL_HSTINAUTORETRY		BIT(14)
 
 static int count;
 static struct dwc3 *dwc3_instance[DWC_CTRL_COUNT];
