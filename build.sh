@@ -37,9 +37,9 @@ KERNEL_DIR=$PWD
 
 # Devices variable
 ZIPNAME="Heh-4.19"
-DEVICE="whyred"
+DEVICE="$1"
 DEFCONFIG=vendor/bouquet_defconfig
-FG_DEFCON=vendor/tulip.config
+FG_DEFCON=vendor/$1.config
 
 # EnvSetup
 KBUILD_BUILD_USER="Nope"
