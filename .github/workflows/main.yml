@@ -1,0 +1,25 @@
+name: Build Kernel
+
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: buildjet-32vcpu-ubuntu-2204
+    steps:
+    - name: Checkout kernel source
+      uses: actions/checkout@v4
+      with:
+        submodules: 'true'
+    - name: Install Dependencies
+      run:  apt-get update && apt-get install -y bison build-essential bc bison curl libssl-dev git zip python python3 flex cpio libncurses5-dev wget default-jre 
+ 
+    - name: Whyred kernel build
+      run: ./build.sh whyred
+
+    - name: Upload whyred kernel build
+      run:  curl --upload-file out/arch/arm64/boot/Image.gz-dtb https://transfer.sh
+
+    - name: Tulip kernel build
+      run: ./build.sh tulip
+
+    - name: Upload tulip kernel build
+      run:  curl --upload-file out/arch/arm64/boot/Image.gz-dtb https://transfer.sh
