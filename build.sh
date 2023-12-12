@@ -40,6 +40,7 @@ ZIPNAME="Heh-4.19"
 DEVICE="$1"
 DEFCONFIG=vendor/bouquet_defconfig
 FG_DEFCON=vendor/$1.config
+CCACHE="$2"
 
 # EnvSetup
 KBUILD_BUILD_USER="Nope"
@@ -99,11 +100,14 @@ exports() {
 build_kernel() {
 
  	tg_post_msg "<b>🔨 $KBUILD_BUILD_VERSION CI Build Triggered</b>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>HEAD : </b><a href='$DRONE_COMMIT_LINK'>$COMMIT_HEAD</a>" "$CHATID"
-	make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1
-
 	msg "|| Started Compilation ||"
-	BUILD_START=$(date +"%s")
-	make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1
+        if [ -n "$CCACHE" ]; then
+	  make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1 CC=ccache
+ 	  make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC=ccache
+	else
+  	  make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1
+ 	  make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1
+	fi
 	BUILD_END=$(date +"%s")
 	DIFF=$((BUILD_END - BUILD_START))
 
