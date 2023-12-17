@@ -41,6 +41,7 @@ DEVICE="$1"
 DEFCONFIG=vendor/bouquet_defconfig
 FG_DEFCON=vendor/$1.config
 CCACHE="$2"
+KERNELSU="$3"
 
 # EnvSetup
 KBUILD_BUILD_USER="Nope"
@@ -70,6 +71,10 @@ clone() {
 	# Toolchain Directory defaults to clang-llvm
 	TC_DIR=$KERNEL_DIR/clang-llvm
 	GCC_DIR=$KERNEL_DIR/gcc
+        if [ -n "$KERNELSU" ]; then
+          git reset --hard
+          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+        fi   
 }
 
 ##------------------------------------------------------##
