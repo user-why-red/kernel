@@ -70,9 +70,6 @@ clone() {
 	# Toolchain Directory defaults to clang-llvm
 	TC_DIR=$KERNEL_DIR/clang-llvm
 	GCC_DIR=$KERNEL_DIR/gcc
-
-	msg "|| Cloning Anykernel ||"
-	git clone --depth 1 --no-single-branch https://github.com/Mocaness/AnyKernel3.git -b main
 }
 
 ##------------------------------------------------------##
@@ -80,7 +77,6 @@ clone() {
 exports() {
 	export ARCH=arm64
 	export SUBARCH=arm64
-	export token=$TELEGRAM_TOKEN
 
 	KBUILD_COMPILER_STRING=$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
 	PATH=$TC_DIR/bin/:$PATH
@@ -89,8 +85,6 @@ exports() {
 	export LD_LIBRARY_PATH=$TC_DIR/lib64:$LD_LIBRARY_PATH
 
 	export PATH KBUILD_COMPILER_STRING
-	export BOT_MSG_URL="https://api.telegram.org/bot$token/sendMessage"
-	export BOT_BUILD_URL="https://api.telegram.org/bot$token/sendDocument"
 	PROCS=$(nproc --all)
 	export PROCS
 }
@@ -99,7 +93,6 @@ exports() {
 
 build_kernel() {
 
- 	tg_post_msg "<b>🔨 $KBUILD_BUILD_VERSION CI Build Triggered</b>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>HEAD : </b><a href='$DRONE_COMMIT_LINK'>$COMMIT_HEAD</a>" "$CHATID"
 	msg "|| Started Compilation ||"
         if [ -n "$CCACHE" ]; then
 	  make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1 CC=ccache
@@ -114,9 +107,8 @@ build_kernel() {
 		if [ -f "$KERNEL_DIR"/out/arch/arm64/boot/Image.gz-dtb ]
 	    then
 	    	msg "|| Kernel successfully compiled ||"
-			gen_zip
 		else
-		tg_post_msg "<b>❌ Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds</b>" "$CHATID"
+                echo "failed"
 		fi
 
 }
@@ -126,17 +118,15 @@ build_kernel() {
 gen_zip() {
 	msg "|| Zipping into a flashable zip ||"
 	cp "$KERNEL_DIR"/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/Image.gz-dtb
-	cp "$KERNEL_DIR"/out/drivers/staging/qcacld-3.0/*.ko AnyKernel3/modules/system/lib/modules
 	cd AnyKernel3 || exit
-	zip -r9 rian_pekok.zip ./* -x .git README.md
+	zip -r9 San-Kernel.zip ./* -x .git README.md
 
 	## Prepare a final zip variable
 	ZIP_FINAL="$ZIPNAME-$DEVICE-$DRONE_BUILD_NUMBER.zip"
 	curl -sLo zipsigner-3.0.jar https://raw.githubusercontent.com/raphielscape/scripts/master/zipsigner-3.0.jar
 
 	msg "|| Signing zip ||"
-	java -jar zipsigner-3.0.jar rian_pekok.zip "$ZIP_FINAL"
-	tg_post_build "$ZIP_FINAL" "$CHATID" "✅ Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
+	java -jar zipsigner-3.0.jar San-Kernel.zip "$ZIP_FINAL"
 	cd ..
 	rm -rf AnyKernel3
 }
