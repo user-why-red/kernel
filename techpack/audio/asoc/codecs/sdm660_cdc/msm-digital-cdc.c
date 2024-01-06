@@ -1314,12 +1314,12 @@ static int headphones_boost_min = -20;
 static int headphones_boost_limit = 20;
 
 //Micrphone
-static int mic_boost = 0;
+static int mic_boost = 5;
 static int mic_boost_min = -20;
 static int mic_boost_limit = 20;
 
 //Speaker & Earpiece
-static int speaker_earpiece_boost = 0;
+static int speaker_earpiece_boost = 5;
 static int speaker_earpiece_boost_min = -20;
 static int speaker_earpiece_boost_limit = 20;
 
