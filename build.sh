@@ -100,8 +100,8 @@ build_kernel() {
 
 	msg "|| Started Compilation ||"
         if [ -n "$CCACHE" ]; then
-	  make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1 CC="ccache clang"
- 	  make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC="ccache clang"
+	  make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1 CC="sccache clang"
+ 	  make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC="sccache clang"
 	else
   	  make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1
  	  make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1
