@@ -40,8 +40,7 @@ ZIPNAME="Heh-4.19"
 DEVICE="$1"
 DEFCONFIG=vendor/bouquet_defconfig
 FG_DEFCON=vendor/$1.config
-CCACHE="$2"
-KERNELSU="$3"
+KERNELSU="$2"
 
 # EnvSetup
 KBUILD_BUILD_USER="Nope"
@@ -99,13 +98,8 @@ exports() {
 build_kernel() {
 
 	msg "|| Started Compilation ||"
-        if [ -n "$CCACHE" ]; then
-	  make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1 CC="sccache clang"
- 	  make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC="sccache clang"
-	else
-  	  make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1
- 	  make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1
-	fi
+  	make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1
+ 	make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1
 	BUILD_END=$(date +"%s")
 	DIFF=$((BUILD_END - BUILD_START))
 
