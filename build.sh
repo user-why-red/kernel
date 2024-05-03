@@ -100,11 +100,11 @@ build_kernel() {
 
 	msg "|| Started Compilation ||"
         if [ -n "$CCACHE" ]; then
-	  firebuild make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1
- 	  firebuild make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 
+	  firebuild make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1 CC="clang -Xclang -fno-pch-timestamp"
+ 	  firebuild make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC="clang -Xclang -fno-pch-timestamp"
 	else
-  	  firebuild make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1
- 	  firebuild make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1
+  	  firebuild make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1 CC="clang -Xclang -fno-pch-timestamp"
+ 	  firebuild make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC="clang -Xclang -fno-pch-timestamp'
 	fi
 	BUILD_END=$(date +"%s")
 	DIFF=$((BUILD_END - BUILD_START))
