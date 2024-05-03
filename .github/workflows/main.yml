@@ -14,7 +14,7 @@ jobs:
       uses: firebuild/firebuild-action@v4
       
     - name: Install Dependencies
-      run:  apt-get update && apt-get install -y bison build-essential bc bison curl libssl-dev git zip python python3 flex cpio libncurses5-dev wget default-jre 
+      run:  sudo apt-get update && apt-get install -y bison build-essential bc bison curl libssl-dev git zip python python3 flex cpio libncurses5-dev wget default-jre 
  
     - name: Whyred kernel build
       run: ./build.sh whyred
