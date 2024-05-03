@@ -3,7 +3,7 @@ name: Build Kernel
 on: workflow_dispatch
 jobs:
   build:
-    runs-on: buildjet-32vcpu-ubuntu-2204
+    runs-on: ubuntu-22.04
     steps:
     - name: Checkout kernel source
       uses: actions/checkout@v4
