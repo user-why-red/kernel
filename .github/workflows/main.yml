@@ -3,7 +3,7 @@ name: Build Kernel
 on: workflow_dispatch
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: warp-custom-kernel
     steps:
     - name: Checkout kernel source
       uses: actions/checkout@v4
