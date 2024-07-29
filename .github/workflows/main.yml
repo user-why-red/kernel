@@ -9,12 +9,8 @@ jobs:
       uses: actions/checkout@v4
       with:
         submodules: 'true'
-        
-    - name: firebuild
-      uses: firebuild/firebuild-action@v4
-      
     - name: Install Dependencies
-      run:  sudo apt-get update && sudo apt-get install -y bison build-essential bc bison curl libssl-dev git zip python3 flex cpio libncurses5-dev wget
+      run:  sudo apt-get update && sudo apt-get install -y bison build-essential bc bison curl libssl-dev git zip python3 flex cpio libncurses5-dev lld wget
     - name: Whyred kernel build
       run: ./build.sh whyred
 
