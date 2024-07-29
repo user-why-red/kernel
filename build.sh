@@ -61,6 +61,7 @@ COMMIT_HEAD=$(git log --oneline -1)
 ##-----------------------------------------------------##
 
 clone() {
+	sudo apt install clang -y
 	echo " "
 	msg "|| Cloning Clang ||"
 	git clone https://gitlab.com/ThankYouMario/android_prebuilts_clang-standalone -b 16 clang-llvm --depth=1 --no-tags --single-branch
@@ -84,10 +85,6 @@ exports() {
 	export SUBARCH=arm64
 
 	KBUILD_COMPILER_STRING=$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
-	PATH=$TC_DIR/bin/:$PATH
-	export CROSS_COMPILE=$GCC_DIR/gcc/aarch64-linux-gnu-
-	export CROSS_COMPILE_COMPAT=$GCC_DIR/gcc/arm-linux-gnueabi-
-	export LD_LIBRARY_PATH=$TC_DIR/lib64:$LD_LIBRARY_PATH
 
 	export PATH KBUILD_COMPILER_STRING
 	PROCS=$(nproc --all)
@@ -100,11 +97,11 @@ build_kernel() {
 
 	msg "|| Started Compilation ||"
         if [ -n "$CCACHE" ]; then
-	  firebuild make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1 CC="clang -Xclang -fno-pch-timestamp"
- 	  firebuild make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC="clang -Xclang -fno-pch-timestamp"
+	  firebuild make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1 CC="clang"
+ 	  firebuild make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC="clang"
 	else
-  	  firebuild make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1 CC="clang -Xclang -fno-pch-timestamp"
- 	  firebuild make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC="clang -Xclang -fno-pch-timestamp'
+  	  firebuild make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1 CC="clang"
+ 	  firebuild make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC="clang'
 	fi
 	BUILD_END=$(date +"%s")
 	DIFF=$((BUILD_END - BUILD_START))
