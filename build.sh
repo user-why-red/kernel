@@ -101,7 +101,7 @@ build_kernel() {
  	  firebuild make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC="clang"
 	else
   	  firebuild make O=out $DEFCONFIG $FG_DEFCON LLVM=1 LLVM_IAS=1 CC="clang"
- 	  firebuild make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC="clang'
+ 	  firebuild make -j"$PROCS" O=out LLVM=1 LLVM_IAS=1 CC="clang"
 	fi
 	BUILD_END=$(date +"%s")
 	DIFF=$((BUILD_END - BUILD_START))
